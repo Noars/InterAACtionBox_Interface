@@ -64,17 +64,8 @@ public class OptionsMenu extends BorderPane {
                 if (newval) {
                     graphicalMenus.getConfiguration().setMode(Configuration.GAZE_INTERACTION);
                     log.info("Configuration.GAZE_INTERACTION : {}", configuration.isGazeInteraction());
-                    if(testCoordEyeTracker()){
-                        graphicalMenus.getConfiguration().setMode(Configuration.MOUSE_INTERACTION);
-                        if(Objects.equals(configuration.getLanguage(), "fra")){
-                            errorEyeTracker.setText("Pas de eye tracker connect\u00e9 ou de premi\u00e8re calibration faite !");
-                        }else{
-                            errorEyeTracker.setText("No connected eye tracker or first calibration done!");
-                        }
-                        useEyeTrackerCheckBox.setSelected(false);
-                    }else {
-                        errorEyeTracker.setText("");
-                    }
+                    graphicalMenus.getConfiguration().setMode(Configuration.MOUSE_INTERACTION);
+                    useEyeTrackerCheckBox.setSelected(false);
                 } else {
                     graphicalMenus.getConfiguration().setMode(Configuration.MOUSE_INTERACTION);
                     log.info("Configuration.GAZE_INTERACTION : {}", configuration.isGazeInteraction());
@@ -222,12 +213,4 @@ public class OptionsMenu extends BorderPane {
         settings.add(menuButton,1, 0);
     }
 
-    public boolean testCoordEyeTracker(){
-        final float[] pointAsFloatArray = Tobii.gazePosition();
-
-        final float xRatio = pointAsFloatArray[0];
-        final float yRatio = pointAsFloatArray[1];
-
-        return xRatio == 0.5 && yRatio == 0.5;
-    }
 }
