@@ -1,11 +1,7 @@
 package main;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -59,18 +55,6 @@ public class Main extends Application {
                 graphicalMenus.getConfiguration().analyse(e.getScreenX(), e.getScreenY());
             }
         });
-
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>
-                () {
-            @Override
-            public void handle(KeyEvent t) {
-                if (t.getCode() == KeyCode.E) {
-                    Platform.exit();
-                }
-            }
-        });
-        Platform.setImplicitExit(false);
-
     }
 
 }

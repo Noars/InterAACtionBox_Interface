@@ -58,6 +58,8 @@ spotbugs {
     //reportLevel = "high"
 }
 
+mainClassName = 'main.Main'
+
 jar {
     manifest {
         attributes 'Main-Class': 'main.Main'
