@@ -95,7 +95,7 @@ public class UpdateMenu extends BorderPane {
 
         GridPane settings = new GridPane();
         settings.setHgap(20);
-        settings.setVgap(graphicalMenus.primaryStage.getHeight() / 30);
+        settings.setVgap(graphicalMenus.primaryStage.getHeight() / 50);
 
         createGnomeControlCenterButton(translator, settings, UpdateService.SYSTEME);
         createGnomeControlCenterButton(translator, settings, UpdateService.AUGCOM);
