@@ -42,15 +42,24 @@ public class OptionsMenu extends BorderPane {
         settings.setHgap(20);
         settings.setVgap(graphicalMenus.primaryStage.getHeight() / 30);
 
-        createGnomeControlCenterButtonLang(translator, settings, configuration, getRow());
-        createGnomeControlCenterButtonEyeTracker(translator, settings, configuration, graphicalMenus, getRow());
-        createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Gestionnaire Wifi:", "images/wi-fi_white.png", "wifi", getRow());
-        createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Gestionnaire Bluetooth:", "images/bluetooth.png", "bluetooth", getRow());
-        createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Param\u00e8tres D'Affichage:", "images/notebook.png", "display", getRow());
-        createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Param\u00e8tres de Batterie:", "images/battery.png", "power", getRow());
-        createGnomeControlCenterButtonTeamViewer(translator, settings, graphicalMenus, getRow());
-        createGnomeControlCenterButtonPassword(translator, settings, getRow());
-        createGnomeControlCenterButtonMail(translator, settings, graphicalMenus, getRow());
+        if (UtilsOS.isUnix()){
+            createGnomeControlCenterButtonLang(translator, settings, configuration, getRow());
+            createGnomeControlCenterButtonEyeTracker(translator, settings, configuration, graphicalMenus, getRow());
+            createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Gestionnaire Wifi:", "images/wi-fi_white.png", "wifi", getRow());
+            createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Gestionnaire Bluetooth:", "images/bluetooth.png", "bluetooth", getRow());
+            createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Param\u00e8tres D'Affichage:", "images/notebook.png", "display", getRow());
+            createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Param\u00e8tres de Batterie:", "images/battery.png", "power", getRow());
+            createGnomeControlCenterButtonTeamViewer(translator, settings, graphicalMenus, getRow());
+            createGnomeControlCenterButtonPassword(translator, settings, getRow());
+            createGnomeControlCenterButtonMail(translator, settings, graphicalMenus, getRow());
+        }else {
+            createGnomeControlCenterButtonLang(translator, settings, configuration, getRow());
+            createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Gestionnaire Wifi:", "images/wi-fi_white.png", "wifi", getRow());
+            createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Param\u00e8tres D'Affichage:", "images/notebook.png", "display", getRow());
+            createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Param\u00e8tres de Batterie:", "images/battery.png", "power", getRow());
+            createGnomeControlCenterButtonTeamViewer(translator, settings, graphicalMenus, getRow());
+            createGnomeControlCenterButtonMail(translator, settings, graphicalMenus, getRow());
+        }
 
         settings.setAlignment(Pos.CENTER);
         BorderPane.setAlignment(settings, Pos.CENTER);
@@ -92,44 +101,42 @@ public class OptionsMenu extends BorderPane {
     }
 
     void createGnomeControlCenterButtonEyeTracker(Translator translator, GridPane settings, Configuration configuration, GraphicalMenus graphicalMenus, int row){
-        if (UtilsOS.isUnix()){
-            I18NLabel useEyeTracker = new I18NLabel(translator,"Eye Tracker:");
-            useEyeTracker.setStyle("-fx-font-weight: bold; -fx-font-family: Helvetica; -fx-font-size: 3em ; -fx-text-fill: #cd2653");
+        I18NLabel useEyeTracker = new I18NLabel(translator,"Eye Tracker:");
+        useEyeTracker.setStyle("-fx-font-weight: bold; -fx-font-family: Helvetica; -fx-font-size: 3em ; -fx-text-fill: #cd2653");
 
-            Label errorEyeTracker = new Label("");
-            errorEyeTracker.setStyle("-fx-font-weight: bold; -fx-font-family: Helvetica; -fx-font-size: 1em ; -fx-text-fill: #cd2653");
+        Label errorEyeTracker = new Label("");
+        errorEyeTracker.setStyle("-fx-font-weight: bold; -fx-font-family: Helvetica; -fx-font-size: 1em ; -fx-text-fill: #cd2653");
 
-            I18NCheckbox useEyeTrackerCheckBox = new I18NCheckbox(translator,"Activ\u00e9");
+        I18NCheckbox useEyeTrackerCheckBox = new I18NCheckbox(translator,"Activ\u00e9");
 
-            String style = "-fx-font-weight: bold; -fx-font-family: Helvetica; -fx-font-size: 2.5em; ";
-            useEyeTrackerCheckBox.setStyle(style);
-            useEyeTrackerCheckBox.hoverProperty().addListener((obs, oldval, newval) -> {
-                if (newval) {
-                    useEyeTrackerCheckBox.setStyle(style + "-fx-cursor: hand; -fx-underline: true");
-                } else {
-                    useEyeTrackerCheckBox.setStyle(style);
-                }
-            });
-            useEyeTrackerCheckBox.selectedProperty().addListener((obj, oldval, newval) -> {
-                if (newval) {
-                    graphicalMenus.getConfiguration().setMode(Configuration.GAZE_INTERACTION);
-                    log.info("Configuration.GAZE_INTERACTION : {}", configuration.isGazeInteraction());
-                    graphicalMenus.getConfiguration().setMode(Configuration.MOUSE_INTERACTION);
-                    useEyeTrackerCheckBox.setSelected(false);
-                } else {
-                    graphicalMenus.getConfiguration().setMode(Configuration.MOUSE_INTERACTION);
-                    log.info("Configuration.GAZE_INTERACTION : {}", configuration.isGazeInteraction());
-                }
-            });
+        String style = "-fx-font-weight: bold; -fx-font-family: Helvetica; -fx-font-size: 2.5em; ";
+        useEyeTrackerCheckBox.setStyle(style);
+        useEyeTrackerCheckBox.hoverProperty().addListener((obs, oldval, newval) -> {
+            if (newval) {
+                useEyeTrackerCheckBox.setStyle(style + "-fx-cursor: hand; -fx-underline: true");
+            } else {
+                useEyeTrackerCheckBox.setStyle(style);
+            }
+        });
+        useEyeTrackerCheckBox.selectedProperty().addListener((obj, oldval, newval) -> {
+            if (newval) {
+                graphicalMenus.getConfiguration().setMode(Configuration.GAZE_INTERACTION);
+                log.info("Configuration.GAZE_INTERACTION : {}", configuration.isGazeInteraction());
+                graphicalMenus.getConfiguration().setMode(Configuration.MOUSE_INTERACTION);
+                useEyeTrackerCheckBox.setSelected(false);
+            } else {
+                graphicalMenus.getConfiguration().setMode(Configuration.MOUSE_INTERACTION);
+                log.info("Configuration.GAZE_INTERACTION : {}", configuration.isGazeInteraction());
+            }
+        });
 
-            useEyeTrackerCheckBox.setSelected(false);
-            useEyeTrackerCheckBox.setTextFill(Color.web("#faeaed"));
-            useEyeTrackerCheckBox.resize(100, 100);
+        useEyeTrackerCheckBox.setSelected(false);
+        useEyeTrackerCheckBox.setTextFill(Color.web("#faeaed"));
+        useEyeTrackerCheckBox.resize(100, 100);
 
-            settings.add(useEyeTracker, 0, row);
-            settings.add(useEyeTrackerCheckBox, 1, row);
-            settings.add(errorEyeTracker, 2, row);
-        }
+        settings.add(useEyeTracker, 0, row);
+        settings.add(useEyeTrackerCheckBox, 1, row);
+        settings.add(errorEyeTracker, 2, row);
     }
 
     void createGnomeControlCenterButtonI18N(Translator translator,GraphicalMenus graphicalMenus, GridPane settings, String label, String imageName, String panelToOpen, int row) {
@@ -173,29 +180,26 @@ public class OptionsMenu extends BorderPane {
     }
 
     void createGnomeControlCenterButtonPassword(Translator translator, GridPane settings, int row){
-        if (UtilsOS.isUnix()){
-            Label changePasswordLabel = new I18NLabel(translator,"Mot de Passe");
-            changePasswordLabel.setStyle("-fx-font-weight: bold; -fx-font-family: Helvetica; -fx-text-fill: #cd2653; -fx-font-size: 3em");
+        Label changePasswordLabel = new I18NLabel(translator,"Mot de Passe");
+        changePasswordLabel.setStyle("-fx-font-weight: bold; -fx-font-family: Helvetica; -fx-text-fill: #cd2653; -fx-font-size: 3em");
 
-
-            Button changePasswordButton = UtilsUI.createI18NButton(translator,
-                    "Changer>",
-                    "images/user_white.png",
-                    (e) -> {
-                        try {
-                            ProcessBuilder pb = new ProcessBuilder("bash", "./scripts/changePassword.sh");
-                            pb.inheritIO().start();
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
+        Button changePasswordButton = UtilsUI.createI18NButton(translator,
+                "Changer>",
+                "images/user_white.png",
+                (e) -> {
+                    try {
+                        ProcessBuilder pb = new ProcessBuilder("bash", "./scripts/changePassword.sh");
+                        pb.inheritIO().start();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
                     }
+                }
             );
 
-            changePasswordButton.setTextFill(Color.web("#faeaed"));
+        changePasswordButton.setTextFill(Color.web("#faeaed"));
 
-            settings.add(changePasswordLabel, 0, row);
-            settings.add(changePasswordButton, 1, row);
-        }
+        settings.add(changePasswordLabel, 0, row);
+        settings.add(changePasswordButton, 1, row);
     }
 
     void createGnomeControlCenterButtonTeamViewer(Translator translator, GridPane settings, GraphicalMenus graphicalMenus, int row){

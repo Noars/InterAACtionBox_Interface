@@ -13,6 +13,7 @@ import main.UI.DefaultTranslator;
 import main.UI.Translator;
 import main.UI.menu.GraphicalMenus;
 import main.utils.StageUtils;
+import main.utils.UtilsOS;
 import main.utils.multilinguism.Multilinguism;
 
 public class Main extends Application {
@@ -28,6 +29,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
+        this.createFolderWindows();
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle("InteraactionBox-AFSR");
@@ -57,4 +60,9 @@ public class Main extends Application {
         });
     }
 
+    public void createFolderWindows(){
+        if (UtilsOS.isWindows()){
+
+        }
+    }
 }
