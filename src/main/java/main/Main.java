@@ -16,6 +16,8 @@ import main.utils.StageUtils;
 import main.utils.UtilsOS;
 import main.utils.multilinguism.Multilinguism;
 
+import java.io.File;
+
 public class Main extends Application {
 
     @Getter
@@ -62,7 +64,9 @@ public class Main extends Application {
 
     public void createFolderWindows(){
         if (UtilsOS.isWindows()){
-
+            File boxFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBox");
+            boolean createFolder = boxFolder.mkdirs();
+            System.out.println("Folder Box created ! -> " + createFolder);
         }
     }
 }

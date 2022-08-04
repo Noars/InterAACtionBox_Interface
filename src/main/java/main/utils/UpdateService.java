@@ -101,15 +101,27 @@ public class UpdateService {
     }
 
     public void checkExist() {
-        if (name.equals("GazePlay")) {
-            File[] directories = new File(System.getProperty("user.home")).listFiles(file -> file.isDirectory() && file.getName().toLowerCase().contains(name.toLowerCase() + "-afsr"));
-            existProperty.set(directories == null || directories.length == 0);
-        } else if (name.equals("InterAACtionGaze") || name.equals("InterAACtionBox_Interface-linux")){
-            File[] directories = new File(System.getProperty("user.home")).listFiles(file -> file.isDirectory() && file.getName().toLowerCase().contains(name.toLowerCase()));
-            existProperty.set(directories == null || directories.length == 0);
-        } else {
-            File[] directories = new File(System.getProperty("user.home") + "/dist").listFiles(file -> file.isDirectory() && file.getName().toLowerCase().contains(name.toLowerCase()));
-            existProperty.set(directories == null || directories.length == 0);
+        if (UtilsOS.isUnix()){
+            if (name.equals("GazePlay")) {
+                File[] directories = new File(System.getProperty("user.home")).listFiles(file -> file.isDirectory() && file.getName().toLowerCase().contains(name.toLowerCase() + "-afsr"));
+                existProperty.set(directories == null || directories.length == 0);
+            } else if (name.equals("InterAACtionGaze") || name.equals("InterAACtionBox_Interface-linux")){
+                File[] directories = new File(System.getProperty("user.home")).listFiles(file -> file.isDirectory() && file.getName().toLowerCase().contains(name.toLowerCase()));
+                existProperty.set(directories == null || directories.length == 0);
+            } else {
+                File[] directories = new File(System.getProperty("user.home") + "/dist").listFiles(file -> file.isDirectory() && file.getName().toLowerCase().contains(name.toLowerCase()));
+                existProperty.set(directories == null || directories.length == 0);
+            }
+        }else {
+            switch (name){
+                case "InterAACtionScene":
+                    File sceneFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBox\\InterAACtionScene");
+                    existProperty.set(!sceneFolder.exists());
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }

@@ -23,9 +23,11 @@ import main.Main;
 import main.UI.Translator;
 import main.utils.UpdateManager;
 import main.utils.UpdateService;
+import main.utils.UtilsOS;
 import main.utils.UtilsUI;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -234,14 +236,14 @@ public class UpdateMenu extends BorderPane {
                         progressBars[UpdateService.AUGCOM + 1].setVisible(false);
                         updateManager.updateServices[UpdateService.AUGCOM].getOutput().setValue("");
                     });
-                    startUpdateInterAACtonScene();
+                    startUpdateInterAACtionScene();
                 });
                 progressPercent(p, 2);
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
         } else {
-            startUpdateInterAACtonScene();
+            startUpdateInterAACtionScene();
         }
     }
 
@@ -265,7 +267,7 @@ public class UpdateMenu extends BorderPane {
         }
     }
 
-    void startUpdateInterAACtonScene() {
+    void startUpdateInterAACtionScene() {
         if (updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getUpdateProperty().get()) {
             try {
                 ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/interAACtionSceneUpdate.sh");
@@ -288,10 +290,23 @@ public class UpdateMenu extends BorderPane {
         }
     }
 
-    void startUpdateOnlyInterAACtonScene() {
+    void startUpdateOnlyInterAACtionScene() {
         if (updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getUpdateProperty().get()) {
             try {
-                ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/interAACtionSceneUpdate.sh");
+                ProcessBuilder pb;
+                if (UtilsOS.isUnix()){
+                    pb = new ProcessBuilder(
+                            "sh",
+                            "../../Update/interAACtionSceneUpdate.sh");
+                }else {
+                    pb = new ProcessBuilder(
+                            "cmd.exe",
+                            "/c",
+                            "certutil -urlcache -split -f 'https://github.com/InteraactionGroup/InterAACtionScene/releases/latest/download/InterAACtionScene.tar.gz' 'C:\\Users\\jordan\\Documents\\InterAACtionBox\\InterAACtionScene.tar.gz'"
+                            );
+                }
+                //"certutil -urlcache -split -f 'https://github.com/InteraactionGroup/InterAACtionScene/releases/latest/download/InterAACtionScene.tar.gz' '" + "C:\\Users\\" +  UtilsOS.getUserNameFromOS() +"\\Documents\\InterAACtionBox\\InterAACtionScene.tar.gz'"
+                //"powershell Add-Type -A 'System.IO.Compression.FileSystem';[IO.Compression.ZipFile]::ExtractToDirectory('" + "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBox\\InterAACtionScene.zip', '" + "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBox')"
                 pb.redirectErrorStream(true);
                 Process p = pb.start();
                 p.onExit().thenRun(() -> {
@@ -539,7 +554,7 @@ public class UpdateMenu extends BorderPane {
                                 startUpdateOnlyAugCom();
                                 break;
                             case UpdateService.INTERAACTION_SCENE:
-                                startUpdateOnlyInterAACtonScene();
+                                startUpdateOnlyInterAACtionScene();
                                 break;
                             case UpdateService.GAZEPLAY:
                                 startUpdateOnlyGazePlay();
