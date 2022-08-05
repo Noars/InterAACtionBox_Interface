@@ -121,6 +121,9 @@ distributions {
             from("build/jre/windows-x64") {
                 into 'lib/jre'
             }
+            from("python") {
+                into 'lib/python'
+            }
         }
     }
 
