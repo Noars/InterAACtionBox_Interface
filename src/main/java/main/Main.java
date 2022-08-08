@@ -64,7 +64,7 @@ public class Main extends Application {
 
     public void createFolderWindows(){
         if (UtilsOS.isWindows()){
-            File boxFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBox");
+            File boxFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR");
             boolean createFolder = boxFolder.mkdirs();
             System.out.println("Folder Box created ! -> " + createFolder);
         }

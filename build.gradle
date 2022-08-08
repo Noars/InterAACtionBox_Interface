@@ -121,6 +121,9 @@ distributions {
             from("bin/interaactionBoxOS-windows.bat") {
                 into 'bin'
             }
+            from("scriptsWindows") {
+                into 'bin'
+            }
             from("build/jre/windows-x64") {
                 into 'lib/jre'
             }

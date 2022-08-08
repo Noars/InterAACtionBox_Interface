@@ -299,14 +299,12 @@ public class UpdateMenu extends BorderPane {
                             "sh",
                             "../../Update/interAACtionSceneUpdate.sh");
                 }else {
+                    log.info("Je veux télécharger Scene");
                     pb = new ProcessBuilder(
                             "cmd.exe",
-                            "/c",
-                            "certutil -urlcache -split -f 'https://github.com/InteraactionGroup/InterAACtionScene/releases/latest/download/InterAACtionScene.tar.gz' 'C:\\Users\\jordan\\Documents\\InterAACtionBox\\InterAACtionScene.tar.gz'"
-                            );
+                            "./scriptsWindows/sceneDownload.bat"
+                    );
                 }
-                //"certutil -urlcache -split -f 'https://github.com/InteraactionGroup/InterAACtionScene/releases/latest/download/InterAACtionScene.tar.gz' '" + "C:\\Users\\" +  UtilsOS.getUserNameFromOS() +"\\Documents\\InterAACtionBox\\InterAACtionScene.tar.gz'"
-                //"powershell Add-Type -A 'System.IO.Compression.FileSystem';[IO.Compression.ZipFile]::ExtractToDirectory('" + "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBox\\InterAACtionScene.zip', '" + "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBox')"
                 pb.redirectErrorStream(true);
                 Process p = pb.start();
                 p.onExit().thenRun(() -> {
