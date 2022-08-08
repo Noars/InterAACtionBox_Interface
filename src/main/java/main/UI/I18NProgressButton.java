@@ -170,7 +170,8 @@ public class I18NProgressButton extends StackPane {
             indicator.setProgress(0);
             this.button.removeEventFilter(MouseEvent.MOUSE_ENTERED, enterButtonHandler);
             this.button.removeEventFilter(MouseEvent.MOUSE_EXITED, exitButtonHandler);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            log.info("");
         }
     }
 }
