@@ -20,7 +20,7 @@ public interface AppNamedProcessCreator {
 
     static String getBrowser() {
         if (UtilsOS.isWindows()) {
-            return "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
+            return "C:\\USers\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBox\\GoogleChromePortable\\GoogleChromePortable.exe";
         } else if (UtilsOS.isUnix()) {
             return "google-chrome";
         }

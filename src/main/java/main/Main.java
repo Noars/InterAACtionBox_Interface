@@ -12,11 +12,9 @@ import lombok.Getter;
 import main.UI.DefaultTranslator;
 import main.UI.Translator;
 import main.UI.menu.GraphicalMenus;
+import main.utils.Setup;
 import main.utils.StageUtils;
-import main.utils.UtilsOS;
 import main.utils.multilinguism.Multilinguism;
-
-import java.io.File;
 
 public class Main extends Application {
 
@@ -26,13 +24,16 @@ public class Main extends Application {
     @Getter
     private Translator translator;
 
+    @Getter
+    private final Setup setup = new Setup();
+
     public static void main(String[] args) {instance = getInstance();
         launch(args);}
 
     @Override
     public void start(Stage primaryStage) {
 
-        this.createFolderWindows();
+        setup.setup();
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle("InteraactionBox-AFSR");
@@ -60,13 +61,5 @@ public class Main extends Application {
                 graphicalMenus.getConfiguration().analyse(e.getScreenX(), e.getScreenY());
             }
         });
-    }
-
-    public void createFolderWindows(){
-        if (UtilsOS.isWindows()){
-            File boxFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR");
-            boolean createFolder = boxFolder.mkdirs();
-            System.out.println("Folder Box created ! -> " + createFolder);
-        }
     }
 }

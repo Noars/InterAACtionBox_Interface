@@ -30,15 +30,21 @@ public class InterAACtionSceneNamedProcessCreator implements AppNamedProcessCrea
                 "cd Documents\\InterAACtionBoxAFSR\\InterAACtionScene",
                 "..\\..\\..\\..\\..\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\python\\python.exe -m http.server 4201"
         );
+
+        this.openPort();
+
     }
 
-    @Override
-    public NamedProcess start(GraphicalMenus graphicalMenus) {
+    public void openPort(){
         try{
             processBuilderServer.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public NamedProcess start(GraphicalMenus graphicalMenus) {
         return AppNamedProcessCreator.createProcressAndWaitForClose(new GoogleChromeXdotoolProcessCreator(), new CloseGoogleChromeProcessCreator(), processBuilder, graphicalMenus, "InteraactionScene");
     }
 

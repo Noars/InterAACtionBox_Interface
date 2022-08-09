@@ -11,7 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 @Slf4j
 public class UpdateService {
@@ -115,13 +118,39 @@ public class UpdateService {
         }else {
             switch (name){
                 case "InterAACtionScene":
-                    File sceneFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBox\\InterAACtionScene");
+                    File sceneFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\InterAACtionScene");
                     existProperty.set(!sceneFolder.exists());
+                    this.writeVersion(name);
                     break;
 
                 default:
                     break;
             }
         }
+    }
+
+    public void writeVersion(String name){
+        try {
+            String pathFile = "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\" + name + "Version.txt";
+            FileWriter fileWriter = new FileWriter(pathFile);
+            fileWriter.write(this.version);
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String readVersion(String name){
+        String version = "";
+        try{
+            String pathFile = "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\" + name + "Version.txt";
+            File file = new File(pathFile);
+            Scanner scanner = new Scanner(file);
+            version = scanner.nextLine();
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return version;
     }
 }
