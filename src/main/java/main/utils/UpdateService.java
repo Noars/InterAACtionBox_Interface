@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 @Slf4j
@@ -130,13 +131,22 @@ public class UpdateService {
     }
 
     public void writeVersion(String name){
+        FileWriter fileWriter = null;
         try {
             String pathFile = "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\" + name + "Version.txt";
-            FileWriter fileWriter = new FileWriter(pathFile);
+            fileWriter = new FileWriter(pathFile, StandardCharsets.UTF_8);
             fileWriter.write(this.version);
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (fileWriter != null){
+                    fileWriter.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -145,10 +155,10 @@ public class UpdateService {
         try{
             String pathFile = "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\" + name + "Version.txt";
             File file = new File(pathFile);
-            Scanner scanner = new Scanner(file);
+            Scanner scanner = new Scanner(file, StandardCharsets.UTF_8);
             version = scanner.nextLine();
             scanner.close();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return version;

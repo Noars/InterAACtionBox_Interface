@@ -52,7 +52,21 @@ public class Setup {
                 Files.walk(source).forEach(elem -> copyElemToDest(source, elem));
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                this.extractGoogle();
             }
+        }
+    }
+
+    public void extractGoogle(){
+        ProcessBuilder pb = new ProcessBuilder(
+                "cmd.exe",
+                "./scriptsWindows/extractGoogleChromePortable.bat"
+        );
+        try {
+            pb.start();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -299,7 +299,6 @@ public class UpdateMenu extends BorderPane {
                             "sh",
                             "../../Update/interAACtionSceneUpdate.sh");
                 }else {
-                    log.info("Je veux télécharger Scene");
                     pb = new ProcessBuilder(
                             "cmd.exe",
                             "./scriptsWindows/sceneDownload.bat"
