@@ -122,13 +122,25 @@ distributions {
                 into 'bin'
             }
             from("scriptsWindows") {
-                into 'bin'
+                into 'lib/scriptsWindows'
             }
             from("build/jre/windows-x64") {
                 into 'lib/jre'
             }
             from("python") {
                 into 'lib/python'
+            }
+            from("GoogleChromePortable/App") {
+                into 'lib/google/App'
+            }
+            from("GoogleChromePortable/Other") {
+                into 'lib/google/Other'
+            }
+            from("GoogleChromePortable/GoogleChromePortable.exe") {
+                into 'lib/google/'
+            }
+            from("GoogleChromePortable/Data.zip") {
+                into 'lib/google/'
             }
         }
     }

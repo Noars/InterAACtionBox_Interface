@@ -301,11 +301,12 @@ public class UpdateMenu extends BorderPane {
                 }else {
                     pb = new ProcessBuilder(
                             "cmd.exe",
-                            "./scriptsWindows/sceneDownload.bat"
+                            "C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\sceneDownload.bat"
                     );
                 }
                 pb.redirectErrorStream(true);
                 Process p = pb.start();
+                System.out.println("Start Download !");
                 p.onExit().thenRun(() -> {
                     closeProcessStream(p);
                     Platform.runLater(() -> {

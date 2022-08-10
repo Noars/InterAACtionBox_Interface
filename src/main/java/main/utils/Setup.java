@@ -2,8 +2,10 @@ package main.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,24 +49,23 @@ public class Setup {
         boolean createGoogleFolder = googleFolder.mkdirs();
         System.out.println("Google Chrome Portable folder created ! -> " + createGoogleFolder);
         if (createGoogleFolder){
-            Path source = Paths.get("GoogleChromePortable");
+            Path source = Paths.get("./../lib/google");
             try{
-                Files.walk(source).forEach(elem -> copyElemToDest(source, elem));
+                Files.walk(source).forEach(elem -> this.copyElemToDest(source, elem));
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
+                System.out.println("Je dezippe Google");
                 this.extractGoogle();
             }
         }
     }
 
     public void extractGoogle(){
-        ProcessBuilder pb = new ProcessBuilder(
-                "cmd.exe",
-                "./scriptsWindows/extractGoogleChromePortable.bat"
-        );
         try {
-            pb.start();
+            System.out.println("Je start");
+            Process runtime = Runtime.getRuntime().exec( "C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\extractGoogleChromePortable.bat");
+            this.showOutputCmd(runtime);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,7 +76,17 @@ public class Setup {
         try{
             Files.copy(elem, destination);
         } catch (IOException e) {
+            System.out.println("Element -> " + elem);
+            System.out.println("Destination -> " + destination);
             e.printStackTrace();
+        }
+    }
+
+    public void showOutputCmd(Process process) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String output = "";
+        while ((output = bufferedReader.readLine()) != null){
+            System.out.println(output);
         }
     }
 }
