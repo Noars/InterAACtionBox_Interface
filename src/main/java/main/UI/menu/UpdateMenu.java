@@ -26,10 +26,7 @@ import main.utils.UpdateService;
 import main.utils.UtilsOS;
 import main.utils.UtilsUI;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
@@ -105,7 +102,9 @@ public class UpdateMenu extends BorderPane {
         createGnomeControlCenterButton(translator, settings, UpdateService.GAZEPLAY);
         createGnomeControlCenterButton(translator, settings, UpdateService.INTERAACTION_PLAYER);
         createGnomeControlCenterButton(translator, settings, UpdateService.INTERAACTION_GAZE);
-        createGnomeControlCenterButton(translator, settings, UpdateService.INTERAACTION_INTERFACE);
+        if (UtilsOS.isWindows()){
+            createGnomeControlCenterButton(translator, settings, UpdateService.INTERAACTION_INTERFACE);
+        }
 
         settings.setAlignment(Pos.CENTER);
         BorderPane.setAlignment(settings, Pos.CENTER);
@@ -159,7 +158,6 @@ public class UpdateMenu extends BorderPane {
         };
         t.setDaemon(true);
         t.start();
-
 
         Thread t2 = new Thread() {
             public void run() {
@@ -227,18 +225,35 @@ public class UpdateMenu extends BorderPane {
     void startUpdateAugCom() {
         if (updateManager.updateServices[UpdateService.AUGCOM].getUpdateProperty().get()) {
             try {
-                ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/augcomUpdate.sh");
-                pb.redirectErrorStream(true);
-                Process p = pb.start();
-                p.onExit().thenRun(() -> {
-                    closeProcessStream(p);
-                    Platform.runLater(() -> {
-                        progressBars[UpdateService.AUGCOM + 1].setVisible(false);
-                        updateManager.updateServices[UpdateService.AUGCOM].getOutput().setValue("");
+                if (UtilsOS.isUnix()){
+                    ProcessBuilder pb = new ProcessBuilder(
+                            "sh",
+                            "../../Update/augcomUpdate.sh");
+                    pb.redirectErrorStream(true);
+                    Process p = pb.start();
+                    p.onExit().thenRun(() -> {
+                        closeProcessStream(p);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.AUGCOM + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.AUGCOM].getOutput().setValue("");
+                        });
+                        startUpdateInterAACtionScene();
                     });
-                    startUpdateInterAACtionScene();
-                });
-                progressPercent(p, 2);
+                    progressPercent(p, 2);
+                }else {
+                    Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\augcomDownload.bat");
+                    runtime.onExit().thenRun(() -> {
+                        closeProcessStream(runtime);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.AUGCOM + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.AUGCOM].getOutput().setValue("");
+                            this.writeVersion(updateManager.updateServices[UpdateService.AUGCOM].getName(), updateManager.updateServices[UpdateService.AUGCOM].getVersion());
+                            updateManager.checkSpecificUpdate(updateManager.updateServices[UpdateService.AUGCOM]);
+                        });
+                        startUpdateInterAACtionScene();
+                    });
+                    progressPercent(runtime, 2);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
@@ -250,17 +265,33 @@ public class UpdateMenu extends BorderPane {
     void startUpdateOnlyAugCom() {
         if (updateManager.updateServices[UpdateService.AUGCOM].getUpdateProperty().get()) {
             try {
-                ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/augcomUpdate.sh");
-                pb.redirectErrorStream(true);
-                Process p = pb.start();
-                p.onExit().thenRun(() -> {
-                    closeProcessStream(p);
-                    Platform.runLater(() -> {
-                        progressBars[UpdateService.AUGCOM + 1].setVisible(false);
-                        updateManager.updateServices[UpdateService.AUGCOM].getOutput().setValue("");
+                if (UtilsOS.isUnix()){
+                    ProcessBuilder pb = new ProcessBuilder(
+                            "sh",
+                            "../../Update/augcomUpdate.sh");
+                    pb.redirectErrorStream(true);
+                    Process p = pb.start();
+                    p.onExit().thenRun(() -> {
+                        closeProcessStream(p);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.AUGCOM + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.AUGCOM].getOutput().setValue("");
+                        });
                     });
-                });
-                progressPercent(p, 2);
+                    progressPercent(p, 2);
+                }else {
+                    Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\augcomDownload.bat");
+                    runtime.onExit().thenRun(() -> {
+                        closeProcessStream(runtime);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.AUGCOM + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.AUGCOM].getOutput().setValue("");
+                            this.writeVersion(updateManager.updateServices[UpdateService.AUGCOM].getName(), updateManager.updateServices[UpdateService.AUGCOM].getVersion());
+                            updateManager.checkSpecificUpdate(updateManager.updateServices[UpdateService.AUGCOM]);
+                        });
+                    });
+                    progressPercent(runtime, 2);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
@@ -270,18 +301,35 @@ public class UpdateMenu extends BorderPane {
     void startUpdateInterAACtionScene() {
         if (updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getUpdateProperty().get()) {
             try {
-                ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/interAACtionSceneUpdate.sh");
-                pb.redirectErrorStream(true);
-                Process p = pb.start();
-                p.onExit().thenRun(() -> {
-                    closeProcessStream(p);
-                    Platform.runLater(() -> {
-                        progressBars[UpdateService.INTERAACTION_SCENE + 1].setVisible(false);
-                        updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getOutput().setValue("");
+                if (UtilsOS.isUnix()){
+                    ProcessBuilder pb = new ProcessBuilder(
+                            "sh",
+                            "../../Update/interAACtionSceneUpdate.sh");
+                    pb.redirectErrorStream(true);
+                    Process p = pb.start();
+                    p.onExit().thenRun(() -> {
+                        closeProcessStream(p);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_SCENE + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getOutput().setValue("");
+                        });
+                        startUpdateInterAACtionPlayer();
                     });
-                    startUpdateInterAACtionPlayer();
-                });
-                progressPercent(p, 3);
+                    progressPercent(p, 3);
+                }else {
+                    Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\sceneDownload.bat");
+                    runtime.onExit().thenRun(() -> {
+                        closeProcessStream(runtime);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_SCENE + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getOutput().setValue("");
+                            this.writeVersion(updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getName(), updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getVersion());
+                            updateManager.checkSpecificUpdate(updateManager.updateServices[UpdateService.INTERAACTION_SCENE]);
+                        });
+                        startUpdateInterAACtionPlayer();
+                    });
+                    progressPercent(runtime, 3);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
@@ -293,28 +341,33 @@ public class UpdateMenu extends BorderPane {
     void startUpdateOnlyInterAACtionScene() {
         if (updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getUpdateProperty().get()) {
             try {
-                ProcessBuilder pb;
                 if (UtilsOS.isUnix()){
-                    pb = new ProcessBuilder(
+                    ProcessBuilder pb = new ProcessBuilder(
                             "sh",
                             "../../Update/interAACtionSceneUpdate.sh");
-                }else {
-                    pb = new ProcessBuilder(
-                            "cmd.exe",
-                            "C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\sceneDownload.bat"
-                    );
-                }
-                pb.redirectErrorStream(true);
-                Process p = pb.start();
-                System.out.println("Start Download !");
-                p.onExit().thenRun(() -> {
-                    closeProcessStream(p);
-                    Platform.runLater(() -> {
-                        progressBars[UpdateService.INTERAACTION_SCENE + 1].setVisible(false);
-                        updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getOutput().setValue("");
+                    pb.redirectErrorStream(true);
+                    Process p = pb.start();
+                    p.onExit().thenRun(() -> {
+                        closeProcessStream(p);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_SCENE + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getOutput().setValue("");
+                        });
                     });
-                });
-                progressPercent(p, 3);
+                    progressPercent(p, 3);
+                }else {
+                    Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\sceneDownload.bat");
+                    runtime.onExit().thenRun(() -> {
+                        closeProcessStream(runtime);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_SCENE + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getOutput().setValue("");
+                            this.writeVersion(updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getName(), updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getVersion());
+                            updateManager.checkSpecificUpdate(updateManager.updateServices[UpdateService.INTERAACTION_SCENE]);
+                        });
+                    });
+                    progressPercent(runtime, 3);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
@@ -324,18 +377,35 @@ public class UpdateMenu extends BorderPane {
     void startUpdateGazePlay() {
         if (updateManager.updateServices[UpdateService.GAZEPLAY].getUpdateProperty().get()) {
             try {
-                ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/gazeplayUpdate.sh");
-                pb.redirectErrorStream(true);
-                Process p = pb.start();
-                p.onExit().thenRun(() -> {
-                    closeProcessStream(p);
-                    Platform.runLater(() -> {
-                        progressBars[UpdateService.GAZEPLAY + 1].setVisible(false);
-                        updateManager.updateServices[UpdateService.GAZEPLAY].getOutput().setValue("");
+                if (UtilsOS.isUnix()){
+                    ProcessBuilder pb = new ProcessBuilder(
+                            "sh",
+                            "../../Update/gazeplayUpdate.sh");
+                    pb.redirectErrorStream(true);
+                    Process p = pb.start();
+                    p.onExit().thenRun(() -> {
+                        closeProcessStream(p);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.GAZEPLAY + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.GAZEPLAY].getOutput().setValue("");
+                        });
+                        startUpdateInterAACtionGaze();
                     });
-                    startUpdateInterAACtionGaze();
-                });
-                progressPercent(p, 4);
+                    progressPercent(p, 4);
+                }else {
+                    Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\gazeplayDownload.bat");
+                    runtime.onExit().thenRun(() -> {
+                        closeProcessStream(runtime);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.GAZEPLAY + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.GAZEPLAY].getOutput().setValue("");
+                            this.writeVersion(updateManager.updateServices[UpdateService.GAZEPLAY].getName(), updateManager.updateServices[UpdateService.GAZEPLAY].getVersion());
+                            updateManager.checkSpecificUpdate(updateManager.updateServices[UpdateService.GAZEPLAY]);
+                        });
+                        startUpdateInterAACtionGaze();
+                    });
+                    progressPercent(runtime, 4);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
@@ -347,17 +417,33 @@ public class UpdateMenu extends BorderPane {
     void startUpdateOnlyGazePlay() {
         if (updateManager.updateServices[UpdateService.GAZEPLAY].getUpdateProperty().get()) {
             try {
-                ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/gazeplayUpdate.sh");
-                pb.redirectErrorStream(true);
-                Process p = pb.start();
-                p.onExit().thenRun(() -> {
-                    closeProcessStream(p);
-                    Platform.runLater(() -> {
-                        progressBars[UpdateService.GAZEPLAY + 1].setVisible(false);
-                        updateManager.updateServices[UpdateService.GAZEPLAY].getOutput().setValue("");
+                if (UtilsOS.isUnix()){
+                    ProcessBuilder pb = new ProcessBuilder(
+                            "sh",
+                            "../../Update/gazeplayUpdate.sh");
+                    pb.redirectErrorStream(true);
+                    Process p = pb.start();
+                    p.onExit().thenRun(() -> {
+                        closeProcessStream(p);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.GAZEPLAY + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.GAZEPLAY].getOutput().setValue("");
+                        });
                     });
-                });
-                progressPercent(p, 4);
+                    progressPercent(p, 4);
+                }else {
+                    Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\gazeplayDownload.bat");
+                    runtime.onExit().thenRun(() -> {
+                        closeProcessStream(runtime);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.GAZEPLAY + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.GAZEPLAY].getOutput().setValue("");
+                            this.writeVersion(updateManager.updateServices[UpdateService.GAZEPLAY].getName(), updateManager.updateServices[UpdateService.GAZEPLAY].getVersion());
+                            updateManager.checkSpecificUpdate(updateManager.updateServices[UpdateService.GAZEPLAY]);
+                        });
+                    });
+                    progressPercent(runtime, 4);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
@@ -368,18 +454,35 @@ public class UpdateMenu extends BorderPane {
 
         if (updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getUpdateProperty().get()) {
             try {
-                ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/interAACtionPlayerUpdate.sh");
-                pb.redirectErrorStream(true);
-                Process p = pb.start();
-                p.onExit().thenRun(() -> {
-                    closeProcessStream(p);
-                    Platform.runLater(() -> {
-                        progressBars[UpdateService.INTERAACTION_PLAYER + 1].setVisible(false);
-                        updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getOutput().setValue("");
+                if (UtilsOS.isUnix()){
+                    ProcessBuilder pb = new ProcessBuilder(
+                            "sh",
+                            "../../Update/interAACtionPlayerUpdate.sh");
+                    pb.redirectErrorStream(true);
+                    Process p = pb.start();
+                    p.onExit().thenRun(() -> {
+                        closeProcessStream(p);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_PLAYER + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getOutput().setValue("");
+                        });
+                        startUpdateGazePlay();
                     });
-                    startUpdateGazePlay();
-                });
-                progressPercent(p, 5);
+                    progressPercent(p, 5);
+                }else {
+                    Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\playerDownload.bat");
+                    runtime.onExit().thenRun(() -> {
+                        closeProcessStream(runtime);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_PLAYER + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getOutput().setValue("");
+                            this.writeVersion(updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getName(), updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getVersion());
+                            updateManager.checkSpecificUpdate(updateManager.updateServices[UpdateService.INTERAACTION_PLAYER]);
+                        });
+                        startUpdateGazePlay();
+                    });
+                    progressPercent(runtime, 5);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
@@ -392,17 +495,33 @@ public class UpdateMenu extends BorderPane {
 
         if (updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getUpdateProperty().get()) {
             try {
-                ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/interAACtionPlayerUpdate.sh");
-                pb.redirectErrorStream(true);
-                Process p = pb.start();
-                p.onExit().thenRun(() -> {
-                    closeProcessStream(p);
-                    Platform.runLater(() -> {
-                        progressBars[UpdateService.INTERAACTION_PLAYER + 1].setVisible(false);
-                        updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getOutput().setValue("");
+                if (UtilsOS.isUnix()){
+                    ProcessBuilder pb = new ProcessBuilder(
+                            "sh",
+                            "../../Update/interAACtionPlayerUpdate.sh");
+                    pb.redirectErrorStream(true);
+                    Process p = pb.start();
+                    p.onExit().thenRun(() -> {
+                        closeProcessStream(p);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_PLAYER + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getOutput().setValue("");
+                        });
                     });
-                });
-                progressPercent(p, 5);
+                    progressPercent(p, 5);
+                }else {
+                    Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\playerDownload.bat");
+                    runtime.onExit().thenRun(() -> {
+                        closeProcessStream(runtime);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_PLAYER + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getOutput().setValue("");
+                            this.writeVersion(updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getName(), updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getVersion());
+                            updateManager.checkSpecificUpdate(updateManager.updateServices[UpdateService.INTERAACTION_PLAYER]);
+                        });
+                    });
+                    progressPercent(runtime, 5);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
@@ -412,18 +531,35 @@ public class UpdateMenu extends BorderPane {
     void startUpdateInterAACtionGaze(){
         if (updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getUpdateProperty().get()) {
             try {
-                ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/interAACtionGazeUpdate.sh");
-                pb.redirectErrorStream(true);
-                Process p = pb.start();
-                p.onExit().thenRun(() -> {
-                    closeProcessStream(p);
-                    Platform.runLater(() -> {
-                        progressBars[UpdateService.INTERAACTION_GAZE + 1].setVisible(false);
-                        updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getOutput().setValue("");
+                if (UtilsOS.isUnix()){
+                    ProcessBuilder pb = new ProcessBuilder(
+                            "sh",
+                            "../../Update/interAACtionGazeUpdate.sh");
+                    pb.redirectErrorStream(true);
+                    Process p = pb.start();
+                    p.onExit().thenRun(() -> {
+                        closeProcessStream(p);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_GAZE + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getOutput().setValue("");
+                        });
+                        startUpdateInterAACtionInterface();
                     });
-                    startUpdateInterAACtionInterface();
-                });
-                progressPercent(p, 6);
+                    progressPercent(p, 6);
+                }else {
+                    Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\gazeDownload.bat");
+                    runtime.onExit().thenRun(() -> {
+                        closeProcessStream(runtime);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_GAZE + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getOutput().setValue("");
+                            this.writeVersion(updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getName(), updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getVersion());
+                            updateManager.checkSpecificUpdate(updateManager.updateServices[UpdateService.INTERAACTION_GAZE]);
+                        });
+                        startUpdateInterAACtionInterface();
+                    });
+                    progressPercent(runtime, 6);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
@@ -435,17 +571,33 @@ public class UpdateMenu extends BorderPane {
     void startUpdateOnlyInterAACtionGaze(){
         if (updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getUpdateProperty().get()) {
             try {
-                ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/interAACtionGazeUpdate.sh");
-                pb.redirectErrorStream(true);
-                Process p = pb.start();
-                p.onExit().thenRun(() -> {
-                    closeProcessStream(p);
-                    Platform.runLater(() -> {
-                        progressBars[UpdateService.INTERAACTION_GAZE + 1].setVisible(false);
-                        updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getOutput().setValue("");
+                if (UtilsOS.isUnix()){
+                    ProcessBuilder pb = new ProcessBuilder(
+                            "sh",
+                            "../../Update/interAACtionGazeUpdate.sh");
+                    pb.redirectErrorStream(true);
+                    Process p = pb.start();
+                    p.onExit().thenRun(() -> {
+                        closeProcessStream(p);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_GAZE + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getOutput().setValue("");
+                        });
                     });
-                });
-                progressPercent(p, 6);
+                    progressPercent(p, 6);
+                }else {
+                    Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\gazeDownload.bat");
+                    runtime.onExit().thenRun(() -> {
+                        closeProcessStream(runtime);
+                        Platform.runLater(() -> {
+                            progressBars[UpdateService.INTERAACTION_GAZE + 1].setVisible(false);
+                            updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getOutput().setValue("");
+                            this.writeVersion(updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getName(), updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getVersion());
+                            updateManager.checkSpecificUpdate(updateManager.updateServices[UpdateService.INTERAACTION_GAZE]);
+                        });
+                    });
+                    progressPercent(runtime, 6);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
@@ -631,5 +783,23 @@ public class UpdateMenu extends BorderPane {
         return UtilsUI.getDoubleClickedI18NButton(translator,text, imagePath, eventhandler, graphicalMenus.primaryStage);
     }
 
-
+    public void writeVersion(String name, String version){
+        FileWriter fileWriter = null;
+        try {
+            String pathFile = "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\" + name + "Version.txt";
+            fileWriter = new FileWriter(pathFile, StandardCharsets.UTF_8);
+            fileWriter.write(version);
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fileWriter != null){
+                    fileWriter.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

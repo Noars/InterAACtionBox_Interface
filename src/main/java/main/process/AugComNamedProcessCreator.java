@@ -5,6 +5,8 @@ import main.process.xdotoolProcess.GoogleChromeXdotoolProcessCreator;
 import main.utils.NamedProcess;
 import main.utils.UtilsOS;
 
+import java.io.IOException;
+
 public class AugComNamedProcessCreator implements AppNamedProcessCreator {
 
     ProcessBuilder processBuilder;
@@ -20,6 +22,16 @@ public class AugComNamedProcessCreator implements AppNamedProcessCreator {
                 "--disable-features=Translate",
                 "--autoplay-policy=no-user-gesture-required",
                 "http://localhost:4200/#/fr/connect/" + UtilsOS.getUserNameFromOSForPWA());
+
+        this.openPort();
+    }
+
+    public void openPort(){
+        try{
+            Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\launchServerAugCom.bat");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -27,10 +27,19 @@ public class GazePlayNamedProcessCreator implements AppNamedProcessCreator {
 
     private ProcessBuilder createGazePlayBuilder() {
 
-            return new ProcessBuilder(
+        ProcessBuilder processBuilder;
+        if (UtilsOS.isUnix()){
+            processBuilder = new ProcessBuilder(
                     "sh",
                     "../../Launcher/gazeplayAfsrLauncher.sh"
             );
+        } else {
+            processBuilder = new ProcessBuilder(
+                    "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\GazePlay\\bin\\gazeplay-windows.bat"
+            );
+        }
+
+        return processBuilder;
     }
 
     @Override

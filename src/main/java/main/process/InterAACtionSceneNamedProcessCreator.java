@@ -10,7 +10,6 @@ import java.io.IOException;
 public class InterAACtionSceneNamedProcessCreator implements AppNamedProcessCreator {
 
     ProcessBuilder processBuilder;
-    ProcessBuilder processBuilderServer;
 
     @Override
     public void setUpProcessBuilder() {
@@ -24,20 +23,12 @@ public class InterAACtionSceneNamedProcessCreator implements AppNamedProcessCrea
                 "--autoplay-policy=no-user-gesture-required",
                 "http://localhost:4201/#/fr/connect/" + UtilsOS.getUserNameFromOSForPWA());
 
-        processBuilderServer = new ProcessBuilder("cmd.exe",
-                "/c",
-                "c:",
-                "cd Documents\\InterAACtionBoxAFSR\\InterAACtionScene",
-                "..\\..\\..\\..\\..\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\python\\python.exe -m http.server 4201"
-        );
-
         this.openPort();
-
     }
 
     public void openPort(){
         try{
-            processBuilderServer.start();
+            Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\launchServerScene.bat");
         } catch (IOException e) {
             e.printStackTrace();
         }
