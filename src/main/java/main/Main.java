@@ -1,11 +1,7 @@
 package main;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -16,6 +12,7 @@ import lombok.Getter;
 import main.UI.DefaultTranslator;
 import main.UI.Translator;
 import main.UI.menu.GraphicalMenus;
+import main.utils.Setup;
 import main.utils.StageUtils;
 import main.utils.multilinguism.Multilinguism;
 
@@ -27,11 +24,16 @@ public class Main extends Application {
     @Getter
     private Translator translator;
 
+    @Getter
+    private final Setup setup = new Setup();
+
     public static void main(String[] args) {instance = getInstance();
         launch(args);}
 
     @Override
     public void start(Stage primaryStage) {
+
+        setup.setup();
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle("InteraactionBox-AFSR");
@@ -59,18 +61,5 @@ public class Main extends Application {
                 graphicalMenus.getConfiguration().analyse(e.getScreenX(), e.getScreenY());
             }
         });
-
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>
-                () {
-            @Override
-            public void handle(KeyEvent t) {
-                if (t.getCode() == KeyCode.E) {
-                    Platform.exit();
-                }
-            }
-        });
-        Platform.setImplicitExit(false);
-
     }
-
 }

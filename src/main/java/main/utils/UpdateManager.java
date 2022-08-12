@@ -19,7 +19,7 @@ public class UpdateManager {
             new UpdateService("GazePlay", "https://api.github.com/repos/AFSR/GazePlay-AFSR/releases/latest"),
             new UpdateService("InterAACtionPlayer", "https://api.github.com/repos/AFSR/InteraactionPlayer-AFSR/releases/latest"),
             new UpdateService("InterAACtionGaze","https://api.github.com/repos/InteraactionGroup/interaactionGaze/releases/latest"),
-            new UpdateService("InterAACtionBox_Interface-linux","https://api.github.com/repos/InteraactionGroup/InterAACtionBox_Interface/releases/latest")
+            new UpdateService("InterAACtionBox_Interface","https://api.github.com/repos/InteraactionGroup/InterAACtionBox_Interface/releases/latest")
     };
 
     public UpdateManager(Configuration configuration) {
@@ -36,8 +36,8 @@ public class UpdateManager {
         Thread updateChecker = new Thread(()->{
             while (true) {
                 try {
-                    checkUpdates();
-                    Thread.sleep(Duration.ofHours(1).toMillis());
+                    this.checkUpdates();
+                    Thread.sleep(Duration.ofHours(10).toMillis());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -54,4 +54,8 @@ public class UpdateManager {
         }
     }
 
+    public void checkSpecificUpdate(UpdateService updateService){
+        updateService.checkUpdate(true);
+        updateService.checkExist();
+    }
 }

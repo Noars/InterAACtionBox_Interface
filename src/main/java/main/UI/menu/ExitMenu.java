@@ -78,7 +78,7 @@ public class ExitMenu extends BorderPane {
                     Platform.exit();
                     System.exit(0);
                 },
-                "Non, aller vers Ubuntu",
+                this.getLabelOS(),
                 "images/exit.png",
                 configuration
         );
@@ -155,5 +155,13 @@ public class ExitMenu extends BorderPane {
 
         progressButton.start();
         return progressButton;
+    }
+
+    private String getLabelOS(){
+        if (UtilsOS.isUnix()){
+            return "Non, aller vers Ubuntu";
+        }else {
+            return "Non, aller vers Windows";
+        }
     }
 }

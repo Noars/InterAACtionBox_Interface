@@ -34,7 +34,7 @@ public class InterAACtionGazeNamedProcessCreator {
             }
             String classpath = gazeInstallationRepo + "/lib/*";
 
-            LinkedList<String> commands = new LinkedList<>(Arrays.asList(javaBin, "-cp", classpath, "-Djdk.gtk.version=2", "-jar", gazeInstallationRepo+"/lib/untitled.jar"));
+            LinkedList<String> commands = new LinkedList<>(Arrays.asList(javaBin, "-cp", classpath, "-Djdk.gtk.version=2", "-jar", gazeInstallationRepo+"/lib/interAACtionGaze.jar"));
 
             for(String command:commands){
                 log.info(command);

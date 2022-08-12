@@ -60,8 +60,6 @@ public class HomeScreen extends BorderPane {
 
         this.getChildren().add(UtilsUI.createBackground(graphicalMenus));
 
-        //String tobiiNotConnected = Arrays.toString(Tobii.gazePosition());
-
         centerMenu = new VBox();
 
         centerMenu.setAlignment(Pos.TOP_CENTER);
@@ -180,9 +178,13 @@ public class HomeScreen extends BorderPane {
         title.setAlignment(Pos.CENTER);
         titlePane.getChildren().addAll(backgroundForTitle, titleBox);
 
-
-        titleBox.setLeft(new HBox(optionButton, updateButton));
-        titleBox.setRight(new HBox(gazeButton, calibrationButton, exitButton));
+        if (UtilsOS.isUnix()){
+            titleBox.setLeft(new HBox(optionButton, updateButton));
+            titleBox.setRight(new HBox(gazeButton, calibrationButton, exitButton));
+        }else {
+            titleBox.setLeft(new HBox(optionButton, updateButton));
+            titleBox.setRight(new HBox(gazeButton, exitButton));
+        }
 
         BorderPane.setAlignment(titlePane, Pos.CENTER_LEFT);
 
