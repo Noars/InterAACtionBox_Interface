@@ -22,16 +22,6 @@ public class AugComNamedProcessCreator implements AppNamedProcessCreator {
                 "--disable-features=Translate",
                 "--autoplay-policy=no-user-gesture-required",
                 "http://localhost:4200/#/fr/connect/" + UtilsOS.getUserNameFromOSForPWA());
-
-        this.openPort();
-    }
-
-    public void openPort(){
-        try{
-            Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\launchServerAugCom.bat");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

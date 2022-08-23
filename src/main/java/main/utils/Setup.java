@@ -73,7 +73,7 @@ public class Setup {
             try{
                 Files.walk(source).forEach(elem -> this.copyElemToDest(source, elem));
             } catch (IOException e) {
-                System.out.println("");
+                e.printStackTrace();
             } finally {
                 this.extractGoogle();
             }

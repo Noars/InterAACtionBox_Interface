@@ -130,6 +130,9 @@ distributions {
             from("python") {
                 into 'lib/python'
             }
+            from("wget") {
+                into 'lib/wget'
+            }
             from("GoogleChromePortable/App") {
                 into 'lib/google/App'
             }

@@ -2,6 +2,7 @@ package main;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -14,7 +15,11 @@ import main.UI.Translator;
 import main.UI.menu.GraphicalMenus;
 import main.utils.Setup;
 import main.utils.StageUtils;
+import main.utils.UtilsOS;
 import main.utils.multilinguism.Multilinguism;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -33,7 +38,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        setup.setup();
+        this.initWindows();
+        this.setup.setup();
+        this.openPort();
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle("InteraactionBox-AFSR");
@@ -61,5 +68,44 @@ public class Main extends Application {
                 graphicalMenus.getConfiguration().analyse(e.getScreenX(), e.getScreenY());
             }
         });
+    }
+
+    public void initWindows(){
+        File appFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR");
+        if (!appFolder.exists()){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Setup Application");
+            alert.setHeaderText(null);
+            alert.setContentText("Completing the installation of InterAACtionBoxAFSR ! \n It may take several minutes.");
+            alert.showAndWait();
+        }
+    }
+
+    public void openPort(){
+        File sceneFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\InterAACtionScene");
+        File augcomFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\AugCom");
+        File playerFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\InterAACtionPlayer");
+
+        if (sceneFolder.exists()){
+            try{
+                Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\sceneServer.bat");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (augcomFolder.exists()){
+            try{
+                Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\augcomServer.bat");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (playerFolder.exists()){
+            try{
+                Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\playerServer.bat");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
