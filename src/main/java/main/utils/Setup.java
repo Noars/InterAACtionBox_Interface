@@ -11,6 +11,12 @@ import java.nio.file.Paths;
 @Slf4j
 public class Setup {
 
+    Process [] listPortServer = new Process[3];
+
+    boolean portSceneOpen = false;
+    boolean portAugComOpen = false;
+    boolean portPlayerOpen = false;
+
     public void setup(){
         if (UtilsOS.isWindows()){
             this.createFolderWindows();
@@ -81,11 +87,23 @@ public class Setup {
     }
 
     public void installGaze(){
-        File gazeFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\interaactionGaze");
+        File gazeFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\interAACtionGaze-windows");
         if (!gazeFolder.exists()){
             try {
-                Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\gazeDownload.bat");
-                this.showOutputCmd(runtime);
+                ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\gazeDownload.bat");
+                pb.redirectErrorStream(true);
+                Process p = pb.start();
+                p.onExit().thenRun(() -> {
+                    try {
+                        p.getInputStream().close();
+                        p.getOutputStream().close();
+                        p.getErrorStream().close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    p.destroy();
+                });
+                this.showOutPutCmd(p);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -95,7 +113,7 @@ public class Setup {
     public void extractGoogle(){
         try {
             Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\extractGoogleChromePortable.bat");
-            this.showOutputCmd(runtime);
+            this.showOutPutCmd(runtime);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -110,7 +128,7 @@ public class Setup {
         }
     }
 
-    public void showOutputCmd(Process process) throws IOException {
+    public void showOutPutCmd(Process process) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String output = "";
         while ((output = bufferedReader.readLine()) != null){
@@ -134,6 +152,138 @@ public class Setup {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void openAllPorts(){
+        File sceneFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\InterAACtionScene");
+        File augcomFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\AugCom");
+        File playerFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\InterAACtionPlayer");
+
+        if (sceneFolder.exists()){
+            try{
+                ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\sceneServer.bat");
+                Process scene = pb.start();
+                listPortServer[0] = scene;
+                this.portSceneOpen = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (augcomFolder.exists()){
+            try{
+                ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\augcomServer.bat");
+                Process augcom = pb.start();
+                listPortServer[1] = augcom;
+                this.portAugComOpen = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (playerFolder.exists()){
+            try{
+                ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\playerServer.bat");
+                Process player = pb.start();
+                listPortServer[2] = player;
+                this.portPlayerOpen = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void openOnePort(String name){
+        switch (name){
+            case "Scene":
+                try{
+                    ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\sceneServer.bat");
+                    Process scene = pb.start();
+                    listPortServer[0] = scene;
+                    this.portSceneOpen = true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "AugCom":
+                try{
+                    ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\augcomServer.bat");
+                    Process augcom = pb.start();
+                    listPortServer[1] = augcom;
+                    this.portAugComOpen = true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "Player":
+                try{
+                    ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\playerServer.bat");
+                    Process player = pb.start();
+                    listPortServer[2] = player;
+                    this.portPlayerOpen = true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void closeAllPort() {
+        this.closeOnePort("Scene");
+        this.closeOnePort("AugCom");
+        this.closeOnePort("Player");
+    }
+
+    public void closeOnePort(String name){
+        switch (name){
+            case "Scene":
+                if (this.portSceneOpen){
+                    try {
+                        listPortServer[0].getInputStream().close();
+                        listPortServer[0].getOutputStream().close();
+                        listPortServer[0].getErrorStream().close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    listPortServer[0].destroy();
+                    this.portSceneOpen = false;
+                }
+                break;
+
+            case "AugCom":
+                if (this.portAugComOpen){
+                    try {
+                        listPortServer[1].getInputStream().close();
+                        listPortServer[1].getOutputStream().close();
+                        listPortServer[1].getErrorStream().close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    listPortServer[1].destroy();
+                    this.portAugComOpen = false;
+                }
+                break;
+
+            case "Player":
+                if (this.portPlayerOpen){
+                    try {
+                        listPortServer[2].getInputStream().close();
+                        listPortServer[2].getOutputStream().close();
+                        listPortServer[2].getErrorStream().close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    listPortServer[2].destroy();
+                    this.portPlayerOpen = false;
+                }
+                break;
+
+            default:
+                break;
         }
     }
 }

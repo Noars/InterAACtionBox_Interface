@@ -36,12 +36,14 @@ public class UpdateMenu extends BorderPane {
     ProgressBar[] progressBars = new ProgressBar[8];
     Button installAllButton;
     GraphicalMenus graphicalMenus;
+    Main main;
 
     public UpdateMenu(GraphicalMenus graphicalMenus, UpdateManager updateManager, Main main, Configuration configuration) {
         super();
 
         Translator translator = main.getTranslator();
 
+        this.main = main;
         this.updateManager = updateManager;
         this.graphicalMenus = graphicalMenus;
         for (int i = 0; i <= 7; i++) {
@@ -180,6 +182,7 @@ public class UpdateMenu extends BorderPane {
     }
 
     void startUpdateSystem() {
+        this.main.getSetup().closeAllPort();
         if (updateManager.updateServices[UpdateService.SYSTEME].getUpdateProperty().get()) {
             try {
                 ProcessBuilder pb = new ProcessBuilder("");
@@ -282,11 +285,13 @@ public class UpdateMenu extends BorderPane {
                     });
                     progressPercent(p, 2);
                 }else {
+                    this.main.getSetup().closeOnePort("AugCom");
                     ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\augcomDownload.bat");
                     pb.redirectErrorStream(true);
                     Process p = pb.start();
                     p.onExit().thenRun(() -> {
                         closeProcessStream(p);
+                        this.main.getSetup().openOnePort("AugCom");
                         Platform.runLater(() -> {
                             progressBars[UpdateService.AUGCOM + 1].setVisible(false);
                             updateManager.updateServices[UpdateService.AUGCOM].getOutput().setValue("");
@@ -362,11 +367,13 @@ public class UpdateMenu extends BorderPane {
                     });
                     progressPercent(p, 3);
                 }else {
+                    this.main.getSetup().closeOnePort("Scene");
                     ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\sceneDownload.bat");
                     pb.redirectErrorStream(true);
                     Process p = pb.start();
                     p.onExit().thenRun(() -> {
                         closeProcessStream(p);
+                        this.main.getSetup().openOnePort("Scene");
                         Platform.runLater(() -> {
                             progressBars[UpdateService.INTERAACTION_SCENE + 1].setVisible(false);
                             updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getOutput().setValue("");
@@ -524,11 +531,13 @@ public class UpdateMenu extends BorderPane {
                     });
                     progressPercent(p, 5);
                 }else {
+                    this.main.getSetup().closeOnePort("Player");
                     ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\playerDownload.bat");
                     pb.redirectErrorStream(true);
                     Process p = pb.start();
                     p.onExit().thenRun(() -> {
                         closeProcessStream(p);
+                        this.main.getSetup().openOnePort("Player");
                         Platform.runLater(() -> {
                             progressBars[UpdateService.INTERAACTION_PLAYER + 1].setVisible(false);
                             updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getOutput().setValue("");
@@ -645,6 +654,7 @@ public class UpdateMenu extends BorderPane {
         }else {
             updateManager.checkUpdates();
         }
+        this.main.getSetup().openAllPorts();
     }
 
     void startUpdateOnlyInterAACtionInterface(){
