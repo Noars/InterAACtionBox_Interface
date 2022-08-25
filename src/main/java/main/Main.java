@@ -17,8 +17,8 @@ import main.utils.Setup;
 import main.utils.StageUtils;
 import main.utils.UtilsOS;
 import main.utils.multilinguism.Multilinguism;
-
 import java.io.File;
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -38,8 +38,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
 
         this.initWindows();
-        this.setup.setup();
-        this.setup.openAllPorts();
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle("InteraactionBox-AFSR");
@@ -58,6 +56,16 @@ public class Main extends Application {
         graphicalMenus.getConfiguration().setScene(scene);
 
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest(e -> {
+            if (UtilsOS.isWindows()){
+                try {
+                    Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\close_ports.bat");
+                    System.exit(0);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
 
         graphicalMenus.getHomeScreen().showCloseProcessButtonIfProcessNotNull();
         StageUtils.displayUnclosable(primaryStage);
@@ -70,13 +78,17 @@ public class Main extends Application {
     }
 
     public void initWindows(){
-        File appFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR");
-        if (!appFolder.exists()){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Setup Application");
-            alert.setHeaderText(null);
-            alert.setContentText("Completing the installation of InterAACtionBoxAFSR ! \n It may take several minutes.");
-            alert.showAndWait();
+        if (UtilsOS.isWindows()){
+            File appFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR");
+            if (!appFolder.exists()){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Setup Application");
+                alert.setHeaderText(null);
+                alert.setContentText("Completing the installation of InterAACtionBoxAFSR ! \n It may take several minutes.");
+                alert.showAndWait();
+            }
+            this.setup.setup();
+            this.setup.openPorts();
         }
     }
 }

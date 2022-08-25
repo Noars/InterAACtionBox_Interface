@@ -35,8 +35,6 @@ public interface AppNamedProcessCreator {
                 namedProcess = new NamedProcess(xdotoolProcessCreator.start(graphicalMenus));
             } else {
                 namedProcess = new NamedProcess();
-                graphicalMenus.primaryStage.hide();
-                graphicalMenus.getHomeScreen().removeMenu();
             }
             return getNamedProcess(processBuilder, graphicalMenus, name, namedProcess);
         } catch (IOException e) {
@@ -54,8 +52,6 @@ public interface AppNamedProcessCreator {
                 namedProcess = new NamedProcess(xdotoolProcessCreator.start(graphicalMenus), closeGoogleChromeProcessCreator.waitForCloseRequest());
             } else {
                 namedProcess = new NamedProcess();
-                graphicalMenus.primaryStage.hide();
-                graphicalMenus.getHomeScreen().removeMenu();
             }
             return getNamedProcess(processBuilder, graphicalMenus, name, namedProcess);
         } catch (IOException e) {

@@ -16,8 +16,6 @@ public class CloseGoogleChromeProcessCreator {
             processBuilder = new ProcessBuilder(
                     "sh",
                     "./scripts/close_chrome.sh");
-        } else {
-            processBuilder = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\close_chrome.bat");
         }
     }
 
@@ -33,17 +31,6 @@ public class CloseGoogleChromeProcessCreator {
                 if(fileEN.exists()) {
                     boolean deleteEnFile = fileEN.delete();
                     log.info("File delete = " + deleteEnFile);
-                }
-                return this.processBuilder.inheritIO().start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else {
-            try {
-                File file = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Downloads\\close161918.txt");
-                if(file.exists()) {
-                    boolean deleteFrFile = file.delete();
-                    log.info("File delete = " + deleteFrFile);
                 }
                 return this.processBuilder.inheritIO().start();
             } catch (IOException e) {

@@ -104,7 +104,7 @@ public class UpdateMenu extends BorderPane {
         createGnomeControlCenterButton(translator, settings, UpdateService.GAZEPLAY);
         createGnomeControlCenterButton(translator, settings, UpdateService.INTERAACTION_PLAYER);
         createGnomeControlCenterButton(translator, settings, UpdateService.INTERAACTION_GAZE);
-        if (UtilsOS.isWindows()){
+        if (UtilsOS.isUnix()){
             createGnomeControlCenterButton(translator, settings, UpdateService.INTERAACTION_INTERFACE);
         }
 
@@ -182,7 +182,7 @@ public class UpdateMenu extends BorderPane {
     }
 
     void startUpdateSystem() {
-        this.main.getSetup().closeAllPort();
+        this.main.getSetup().closePorts();
         if (updateManager.updateServices[UpdateService.SYSTEME].getUpdateProperty().get()) {
             try {
                 ProcessBuilder pb = new ProcessBuilder("");
@@ -285,13 +285,13 @@ public class UpdateMenu extends BorderPane {
                     });
                     progressPercent(p, 2);
                 }else {
-                    this.main.getSetup().closeOnePort("AugCom");
+                    this.main.getSetup().closePorts();
                     ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\augcomDownload.bat");
                     pb.redirectErrorStream(true);
                     Process p = pb.start();
                     p.onExit().thenRun(() -> {
                         closeProcessStream(p);
-                        this.main.getSetup().openOnePort("AugCom");
+                        this.main.getSetup().openPorts();
                         Platform.runLater(() -> {
                             progressBars[UpdateService.AUGCOM + 1].setVisible(false);
                             updateManager.updateServices[UpdateService.AUGCOM].getOutput().setValue("");
@@ -367,13 +367,13 @@ public class UpdateMenu extends BorderPane {
                     });
                     progressPercent(p, 3);
                 }else {
-                    this.main.getSetup().closeOnePort("Scene");
+                    this.main.getSetup().closePorts();
                     ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\sceneDownload.bat");
                     pb.redirectErrorStream(true);
                     Process p = pb.start();
                     p.onExit().thenRun(() -> {
                         closeProcessStream(p);
-                        this.main.getSetup().openOnePort("Scene");
+                        this.main.getSetup().openPorts();
                         Platform.runLater(() -> {
                             progressBars[UpdateService.INTERAACTION_SCENE + 1].setVisible(false);
                             updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getOutput().setValue("");
@@ -531,13 +531,13 @@ public class UpdateMenu extends BorderPane {
                     });
                     progressPercent(p, 5);
                 }else {
-                    this.main.getSetup().closeOnePort("Player");
+                    this.main.getSetup().closePorts();
                     ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\playerDownload.bat");
                     pb.redirectErrorStream(true);
                     Process p = pb.start();
                     p.onExit().thenRun(() -> {
                         closeProcessStream(p);
-                        this.main.getSetup().openOnePort("Player");
+                        this.main.getSetup().openPorts();
                         Platform.runLater(() -> {
                             progressBars[UpdateService.INTERAACTION_PLAYER + 1].setVisible(false);
                             updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getOutput().setValue("");
@@ -634,7 +634,7 @@ public class UpdateMenu extends BorderPane {
     }
 
     void startUpdateInterAACtionInterface(){
-        if (updateManager.updateServices[UpdateService.INTERAACTION_INTERFACE].getUpdateProperty().get()) {
+        if ((updateManager.updateServices[UpdateService.INTERAACTION_INTERFACE].getUpdateProperty().get()) && (UtilsOS.isUnix())) {
             try {
                 ProcessBuilder pb = new ProcessBuilder("sh", "../../Update/interAACtionBoxInterfaceUpdate.sh");
                 pb.redirectErrorStream(true);
@@ -654,7 +654,7 @@ public class UpdateMenu extends BorderPane {
         }else {
             updateManager.checkUpdates();
         }
-        this.main.getSetup().openAllPorts();
+        this.main.getSetup().openPorts();
     }
 
     void startUpdateOnlyInterAACtionInterface(){
