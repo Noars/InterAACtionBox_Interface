@@ -128,11 +128,12 @@ public class Setup {
     }
 
     public void showOutPutCmd(Process process) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
         String output = "";
         while ((output = bufferedReader.readLine()) != null){
             System.out.println(output);
         }
+        bufferedReader.close();
     }
 
     public void writeVersion(File file){
