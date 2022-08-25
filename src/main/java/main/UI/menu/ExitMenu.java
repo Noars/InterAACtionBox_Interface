@@ -75,6 +75,11 @@ public class ExitMenu extends BorderPane {
                         graphicalMenus.process.destroy();
                         graphicalMenus.process.set(null);
                     }
+                    try {
+                        Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\close_ports.bat");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                     Platform.exit();
                     System.exit(0);
                 },

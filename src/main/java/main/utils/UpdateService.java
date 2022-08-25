@@ -152,7 +152,7 @@ public class UpdateService {
                     File playerFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\InterAACtionPlayer");
                     existProperty.set(!playerFolder.exists());
                     break;
-                case "AUgCom":
+                case "AugCom":
                     File augcomFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\AugCom");
                     existProperty.set(!augcomFolder.exists());
                     break;

@@ -1,10 +1,6 @@
-# interaactionBoxOS-AFSR
-
-Lien vers la dernière release:
-https://github.com/AFSR/interaactionBoxOS-AFSR/releases/tag/0.0.1
-
 # Google Chrome Portable
 
+Un google chrome portable personnalisé et adapté a nos logiciels.
 Version actuellement utilisé -> 104.0.5112.81
 
 Si on change de version, pour pouvoir envoie le tout en ligne sur git il faut :
@@ -19,4 +15,10 @@ Et aussi, la génération d'un exe via innosetup plnate du à un trop grand nomb
 
 # Python
 
+Utilisé pour l'ouverture des ports des applications angular en local.
 Version actuellement utilisé -> 3.10
+
+# Wget
+
+GNU Wget pour windows, utilitaire de ligne de commande pour récupérer des fichiers à l'aide des protocoles HTTP, HTTPS et FTP.
+Version actuellement utilisé -> 1.21.3

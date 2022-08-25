@@ -22,7 +22,7 @@ public class InteraactionGazeXdotoolProcessCreator {
             );
         }else {
             processBuilder = new ProcessBuilder(
-                    "C:\\Program Files (x86)\\InteraactionGaze\\bin\\interAACtionGaze-windows.bat"
+                    "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\interAACtionGaze-windows\\bin\\interAACtionGaze-windows.bat"
             );
         }
     }

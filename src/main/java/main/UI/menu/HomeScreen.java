@@ -29,15 +29,9 @@ import main.gaze.devicemanager.TobiiGazeDeviceManager;
 import main.process.*;
 import main.process.xdotoolProcess.ActivateMainWindowProcess;
 import main.utils.*;
-import tobii.Tobii;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class HomeScreen extends BorderPane {

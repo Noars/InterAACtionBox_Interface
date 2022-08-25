@@ -11,12 +11,21 @@ import java.nio.file.Paths;
 @Slf4j
 public class Setup {
 
+    Process [] listPortServer = new Process[3];
+
+    boolean portSceneOpen = false;
+    boolean portAugComOpen = false;
+    boolean portPlayerOpen = false;
+
+    Process exitAngularAppProcess;
+
     public void setup(){
         if (UtilsOS.isWindows()){
             this.createFolderWindows();
             this.createFolderVersion();
             this.installGoogle();
             this.installGaze();
+            this.exitAngularApp();
         }
     }
 
@@ -39,27 +48,23 @@ public class Setup {
         File augcomVersion = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\AugComVersion.txt");
         File gazeVersion = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\InterAACtionGazeVersion.txt");
         File gazeplayVersion = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\GazePlayVersion.txt");
-        File interfaceVersion = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\InterAACtionBox_InterfaceVersion.txt");
         try {
             boolean createSceneFile = sceneVersion.createNewFile();
             boolean createPlayerFile = playerVersion.createNewFile();
             boolean createAugComFile = augcomVersion.createNewFile();
             boolean createGazeFile = gazeVersion.createNewFile();
             boolean createGazePlayFile = gazeplayVersion.createNewFile();
-            boolean createInterfaceFile = interfaceVersion.createNewFile();
             System.out.println("Files version created ! " +
                     "Scene -> " + createSceneFile +
                     ", Player -> " + createPlayerFile +
                     ", AugCom -> " + createAugComFile +
                     ", Gaze -> " + createGazeFile +
-                    ", GazePlay -> " + createGazePlayFile +
-                    ", Interface -> " + createInterfaceFile);
+                    ", GazePlay -> " + createGazePlayFile);
             this.writeVersion(sceneVersion);
             this.writeVersion(playerVersion);
             this.writeVersion(augcomVersion);
             this.writeVersion(gazeVersion);
             this.writeVersion(gazeplayVersion);
-            this.writeVersion(interfaceVersion);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,7 +78,7 @@ public class Setup {
             try{
                 Files.walk(source).forEach(elem -> this.copyElemToDest(source, elem));
             } catch (IOException e) {
-                System.out.println("");
+                e.printStackTrace();
             } finally {
                 this.extractGoogle();
             }
@@ -81,11 +86,23 @@ public class Setup {
     }
 
     public void installGaze(){
-        File gazeFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\interaactionGaze");
+        File gazeFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\interAACtionGaze-windows");
         if (!gazeFolder.exists()){
             try {
-                Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\gazeDownload.bat");
-                this.showOutputCmd(runtime);
+                ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\gazeDownload.bat");
+                pb.redirectErrorStream(true);
+                Process p = pb.start();
+                p.onExit().thenRun(() -> {
+                    try {
+                        p.getInputStream().close();
+                        p.getOutputStream().close();
+                        p.getErrorStream().close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    p.destroy();
+                });
+                this.showOutPutCmd(p);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -95,7 +112,7 @@ public class Setup {
     public void extractGoogle(){
         try {
             Process runtime = Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\extractGoogleChromePortable.bat");
-            this.showOutputCmd(runtime);
+            this.showOutPutCmd(runtime);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -110,7 +127,7 @@ public class Setup {
         }
     }
 
-    public void showOutputCmd(Process process) throws IOException {
+    public void showOutPutCmd(Process process) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String output = "";
         while ((output = bufferedReader.readLine()) != null){
@@ -134,6 +151,59 @@ public class Setup {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void openPorts(){
+        File sceneFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\InterAACtionScene");
+        File augcomFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\AugCom");
+        File playerFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\InterAACtionPlayer");
+
+        if (sceneFolder.exists()){
+            try{
+                ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\sceneServer.bat");
+                Process scene = pb.start();
+                listPortServer[0] = scene;
+                this.portSceneOpen = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (augcomFolder.exists()){
+            try{
+                ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\augcomServer.bat");
+                Process augcom = pb.start();
+                listPortServer[1] = augcom;
+                this.portAugComOpen = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (playerFolder.exists()){
+            try{
+                ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\playerServer.bat");
+                Process player = pb.start();
+                listPortServer[2] = player;
+                this.portPlayerOpen = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void closePorts() {
+        try {
+            Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\close_ports.bat");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exitAngularApp(){
+        try {
+            Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\close_chrome.bat");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

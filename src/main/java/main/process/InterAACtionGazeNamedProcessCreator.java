@@ -68,7 +68,7 @@ public class InterAACtionGazeNamedProcessCreator {
 
     private String getInterAACtionGazeRepo() {
         if (UtilsOS.isWindows()) {
-            return "C:/Program Files (x86)/InteraactionGaze";
+            return "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\interAACtionGaze-windows";
         } else {
             String text = "../../InterAACtionGaze";
             log.info("InterAACtionGaze directory is: " + text);

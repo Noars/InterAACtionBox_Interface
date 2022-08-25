@@ -22,16 +22,6 @@ public class InterAACtionSceneNamedProcessCreator implements AppNamedProcessCrea
                 "--disable-features=Translate",
                 "--autoplay-policy=no-user-gesture-required",
                 "http://localhost:4201/#/fr/connect/" + UtilsOS.getUserNameFromOSForPWA());
-
-        this.openPort();
-    }
-
-    public void openPort(){
-        try{
-            Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\launchServerScene.bat");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
