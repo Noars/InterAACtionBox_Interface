@@ -1,6 +1,8 @@
 package main.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -17,15 +19,13 @@ public class Setup {
     boolean portAugComOpen = false;
     boolean portPlayerOpen = false;
 
-    Process exitAngularAppProcess;
-
     public void setup(){
         if (UtilsOS.isWindows()){
+            this.exitAngularApp();
             this.createFolderWindows();
             this.createFolderVersion();
             this.installGoogle();
             this.installGaze();
-            this.exitAngularApp();
         }
     }
 
@@ -105,6 +105,17 @@ public class Setup {
                 this.showOutPutCmd(p);
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                FileWriter fileWriter = null;
+                try {
+                    JSONObject softwareJson = JsonReader.readJsonFromUrl("https://api.github.com/repos/InteraactionGroup/interaactionGaze/releases/latest");
+                    String pathFile = "C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\InterAACtionGazeVersion.txt";
+                    fileWriter = new FileWriter(pathFile, StandardCharsets.UTF_8);
+                    fileWriter.write("" + softwareJson.get("name"));
+                    fileWriter.close();
+                } catch (JSONException | IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
