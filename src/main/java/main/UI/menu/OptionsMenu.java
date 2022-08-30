@@ -57,7 +57,6 @@ public class OptionsMenu extends BorderPane {
             createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Gestionnaire Wifi:", "images/wi-fi_white.png", "wifi", getRow());
             createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Param\u00e8tres D'Affichage:", "images/notebook.png", "display", getRow());
             createGnomeControlCenterButtonI18N(translator, graphicalMenus, settings, "Param\u00e8tres de Batterie:", "images/battery.png", "power", getRow());
-            createGnomeControlCenterButtonTeamViewer(translator, settings, graphicalMenus, getRow());
             createGnomeControlCenterButtonMail(translator, settings, graphicalMenus, getRow());
         }
 
