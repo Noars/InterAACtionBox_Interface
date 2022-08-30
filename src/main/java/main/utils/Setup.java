@@ -37,7 +37,8 @@ public class Setup {
 
     public void createFolderVersion(){
         File versionFolder = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version");
-        if (versionFolder.mkdirs()){
+        boolean createFolder = versionFolder.mkdirs();
+        if (createFolder){
             this.createFileVersion();
         }
     }
@@ -212,10 +213,25 @@ public class Setup {
     }
 
     public void exitAngularApp(){
-        try {
-            Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\close_chrome.bat");
-        } catch (IOException e) {
-            e.printStackTrace();
+        ExitAngularAppThread exitThread = new ExitAngularAppThread();
+        exitThread.start();
+    }
+
+    public static class ExitAngularAppThread extends Thread {
+
+        public ExitAngularAppThread(){
+            super();
+        }
+
+        public void run(){
+            try {
+                while (true){
+                    Thread.sleep(5000);
+                    Runtime.getRuntime().exec("C:\\Program Files (x86)\\InterAACtionBoxAFSR\\lib\\scriptsWindows\\close_chrome.bat");
+                }
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
