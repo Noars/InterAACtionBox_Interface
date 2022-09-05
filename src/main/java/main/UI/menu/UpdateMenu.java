@@ -694,11 +694,6 @@ public class UpdateMenu extends BorderPane {
                         } catch (NumberFormatException e) {
                             //DO NOTHING
                         }
-                    } else {
-                        String finalS = s;
-                        Platform.runLater(() -> {
-                            updateManager.updateServices[index - 1].getOutput().setValue(finalS);
-                        });
                     }
                 }
             } catch (IOException e) {
