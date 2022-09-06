@@ -4,3 +4,4 @@ C:\"Program Files (x86)"\InterAACtionBoxAFSR\lib\wget\wget.exe -q -c --show-prog
 powershell Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('interAACtionGaze-windows.zip', '../InterAACtionBoxAFSR')
 powershell Get-Children interAACtionGaze-windows | Rename-Item -NewName "interAACtionGaze"
 del interAACtionGaze-windows.zip
+exit

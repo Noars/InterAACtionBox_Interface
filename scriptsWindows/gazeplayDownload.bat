@@ -4,3 +4,4 @@ C:\"Program Files (x86)"\InterAACtionBoxAFSR\lib\wget\wget.exe -q -c --show-prog
 powershell Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('gazeplay-afsr-windows-x64.zip', '../InterAACtionBoxAFSR')
 powershell Get-Children gazeplay-afsr-* | Rename-Item -NewName "GazePlay"
 del gazeplay-afsr-windows-x64.zip
+exit
