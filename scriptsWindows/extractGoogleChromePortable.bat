@@ -5,3 +5,5 @@ del chromeDll.zip
 cd ../../../
 powershell Add-Type -A 'System.IO.Compression.FileSystem';[IO.Compression.ZipFile]::ExtractToDirectory('Data.zip', '../GoogleChromePortable')
 del Data.zip
+
+exit
