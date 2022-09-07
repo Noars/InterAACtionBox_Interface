@@ -64,7 +64,6 @@ public class HomeScreen extends BorderPane {
 
         goToUpdateMenu = (e) -> {
             interAACtionGazeNamedProcessCreator.close();
-            updateManager.checkUpdates();
             graphicalMenus.getConfiguration().scene.setRoot(graphicalMenus.getUpdateMenu());
         };
 

@@ -49,23 +49,27 @@ public class Setup {
         File augcomVersion = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\AugComVersion.txt");
         File gazeVersion = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\InterAACtionGazeVersion.txt");
         File gazeplayVersion = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\GazePlayVersion.txt");
+        File interfaceVersion = new File("C:\\Users\\" + UtilsOS.getUserNameFromOS() + "\\Documents\\InterAACtionBoxAFSR\\Version\\InterAACtionBox_InterfaceVersion.txt");
         try {
             boolean createSceneFile = sceneVersion.createNewFile();
             boolean createPlayerFile = playerVersion.createNewFile();
             boolean createAugComFile = augcomVersion.createNewFile();
             boolean createGazeFile = gazeVersion.createNewFile();
             boolean createGazePlayFile = gazeplayVersion.createNewFile();
+            boolean createInterfaceFile = interfaceVersion.createNewFile();
             System.out.println("Files version created ! " +
                     "Scene -> " + createSceneFile +
                     ", Player -> " + createPlayerFile +
                     ", AugCom -> " + createAugComFile +
                     ", Gaze -> " + createGazeFile +
-                    ", GazePlay -> " + createGazePlayFile);
+                    ", GazePlay -> " + createGazePlayFile +
+                    ", Interface -> " + createInterfaceFile);
             this.writeVersion(sceneVersion);
             this.writeVersion(playerVersion);
             this.writeVersion(augcomVersion);
             this.writeVersion(gazeVersion);
             this.writeVersion(gazeplayVersion);
+            this.writeVersion(interfaceVersion);
         } catch (IOException e) {
             e.printStackTrace();
         }
