@@ -34,13 +34,11 @@ public class UpdateManager {
                         )
                 ));
         Thread updateChecker = new Thread(()->{
-            while (true) {
-                try {
-                    this.checkUpdates();
-                    Thread.sleep(Duration.ofHours(10).toMillis());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            try {
+                Thread.sleep(3000);
+                this.checkUpdates();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
         updateChecker.setDaemon(true);
