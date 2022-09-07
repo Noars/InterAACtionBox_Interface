@@ -175,11 +175,12 @@ public class UpdateService {
     public String readVersion(String name){
         String version = "";
         try{
-            File file = new File("C:\\Users\\jordan\\Documents\\InterAACtionBoxAFSR\\Version\\"+ name +"Version.txt");
+            File file = new File("C:\\Users\\jordan\\Documents\\InterAACtionBoxAFSR\\Version\\"+ name + "Version.txt");
             Scanner scanner = new Scanner(file, StandardCharsets.UTF_8);
             version = scanner.nextLine();
             scanner.close();
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("No version found !");
         }
         return version;
