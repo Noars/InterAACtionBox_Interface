@@ -61,6 +61,8 @@ public class UpdateService {
                 if (softwareJson != null) {
                     this.version = "" + softwareJson.get("name");
                     updateProperty.set(!(softwareJson.get("name").equals(this.readVersion(name))));
+                    System.out.println("Name json -> " + softwareJson.get("name"));
+                    System.out.println("Name version -> " + this.readVersion(name));
                 }
             } catch (JSONException | IOException e) {
                 e.printStackTrace();
