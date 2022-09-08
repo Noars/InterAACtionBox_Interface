@@ -69,7 +69,7 @@ public class Setup {
             this.writeVersion(augcomVersion);
             this.writeVersion(gazeVersion);
             this.writeVersion(gazeplayVersion);
-            this.writeVersion(interfaceVersion);
+            this.writeInterfaceVersion(interfaceVersion);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -168,6 +168,19 @@ public class Setup {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void writeInterfaceVersion(File file){
+        FileWriter fileWriter = null;
+        try {
+            JSONObject softwareJson = JsonReader.readJsonFromUrl("https://api.github.com/repos/InteraactionGroup/InterAACtionBox_Interface/releases/latest");
+            String date = "" + softwareJson.get("created_at");
+            fileWriter = new FileWriter(file, StandardCharsets.UTF_8);
+            fileWriter.write("" + softwareJson.get("name") + " Dev v." + date.substring(0, 10).replace("-", "."));
+            fileWriter.close();
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
         }
     }
 
