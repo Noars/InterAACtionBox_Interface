@@ -270,7 +270,7 @@ public class UpdateMenu extends BorderPane {
     }
 
     void startUpdateOnlyAugCom() {
-        if (updateManager.updateServices[UpdateService.AUGCOM].getUpdateProperty().get()) {
+        if (updateManager.updateServices[UpdateService.AUGCOM].getUpdateProperty().get() && !this.download) {
             try {
                 if (UtilsOS.isUnix()){
                     ProcessBuilder pb = new ProcessBuilder(
@@ -354,7 +354,7 @@ public class UpdateMenu extends BorderPane {
     }
 
     void startUpdateOnlyInterAACtionScene() {
-        if (updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getUpdateProperty().get()) {
+        if (updateManager.updateServices[UpdateService.INTERAACTION_SCENE].getUpdateProperty().get() && !this.download) {
             try {
                 if (UtilsOS.isUnix()){
                     ProcessBuilder pb = new ProcessBuilder(
@@ -438,7 +438,7 @@ public class UpdateMenu extends BorderPane {
     }
 
     void startUpdateOnlyGazePlay() {
-        if (updateManager.updateServices[UpdateService.GAZEPLAY].getUpdateProperty().get()) {
+        if (updateManager.updateServices[UpdateService.GAZEPLAY].getUpdateProperty().get() && !this.download) {
             try {
                 if (UtilsOS.isUnix()){
                     ProcessBuilder pb = new ProcessBuilder(
@@ -522,7 +522,7 @@ public class UpdateMenu extends BorderPane {
 
     void startUpdateOnlyInterAACtionPlayer() {
 
-        if (updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getUpdateProperty().get()) {
+        if (updateManager.updateServices[UpdateService.INTERAACTION_PLAYER].getUpdateProperty().get() && !this.download) {
             try {
                 if (UtilsOS.isUnix()){
                     ProcessBuilder pb = new ProcessBuilder(
@@ -606,7 +606,7 @@ public class UpdateMenu extends BorderPane {
     }
 
     void startUpdateOnlyInterAACtionGaze(){
-        if (updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getUpdateProperty().get()) {
+        if (updateManager.updateServices[UpdateService.INTERAACTION_GAZE].getUpdateProperty().get() && !this.download) {
             try {
                 if (UtilsOS.isUnix()){
                     ProcessBuilder pb = new ProcessBuilder(
